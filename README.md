@@ -12,7 +12,7 @@
 
 1. Cấu trúc thư mục dự án\
    [Cấu trúc cơ bản](https://topdev.vn/blog/cau-truc-thu-muc-trong-du-an-react/)\
-   [Link code mẫu của các anh](https://drive.google.com/drive/folders/1NTWVd4ZwQeTYY9A3GcP3_psb5tiIcbch?usp=drive_link)\
+   [Link code mẫu của các anh](https://drive.google.com/drive/folders/1NTWVd4ZwQeTYY9A3GcP3_psb5tiIcbch?usp=drive_link)
 2. Công nghệ sử dụng
 
 - react tạo component
