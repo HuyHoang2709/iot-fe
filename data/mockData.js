@@ -1,3 +1,11 @@
+export const user = {
+  id: 1,
+  name: "Quản trị viên",
+  email: "admin@example.com",
+  username: "admin",
+  password: "admin",
+};
+
 export const temp = 25;
 export const humid = 60;
 
@@ -25,3 +33,30 @@ export const devices = [
 export const tempData = [26, 21, 23, 25];
 
 export const humidData = [60, 70, 80, 70];
+
+export const history = [
+  {
+    id: 1,
+    temp: 25,
+    humid: 60,
+    timestamp: new Date().getTime(),
+  },
+  {
+    id: 1,
+    temp: 25,
+    humid: 60,
+    timestamp: new Date().getTime(),
+  },
+  {
+    id: 1,
+    temp: 25,
+    humid: 60,
+    timestamp: new Date().getTime(),
+  },
+  {
+    id: 1,
+    temp: 25,
+    humid: 60,
+    timestamp: new Date().getTime(),
+  },
+];

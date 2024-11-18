@@ -11,7 +11,7 @@ export const Dashboard = ({ user }) => {
       </div>
       <div className="w-5/6">
         <Header user={user} />
-        <DisplayContainer />
+        <DisplayContainer user={user} />
       </div>
     </div>
   );
