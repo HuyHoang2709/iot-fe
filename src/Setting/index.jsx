@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 export const Setting = ({ user }) => {
   const [formData, setFormData] = useState({
-    device: "",
+    device: user.deviceList[0],
     lowerTemp: undefined,
     upperTemp: undefined,
     lowerHumid: undefined,
@@ -29,6 +29,8 @@ export const Setting = ({ user }) => {
     else if (formData.lowerHumid > formData.upperHumid)
       toast.error("Ngưỡng độ ẩm không hợp lệ!");
     else {
+      console.log(formData, user.deviceList);
+
       fetch("http://localhost:3000/device/setting", {
         method: "PUT",
         credentials: "include",
@@ -37,7 +39,7 @@ export const Setting = ({ user }) => {
         },
         body: JSON.stringify({
           user_id: user.id,
-          device_id: formData.device,
+          device_id: formData.device.id,
           lower_temp: formData.lowerTemp,
           upper_temp: formData.upperTemp,
           lower_humid: formData.lowerHumid,
@@ -66,7 +68,12 @@ export const Setting = ({ user }) => {
                 options={user.deviceList.map((device) => device.name)}
                 value={formData.device}
                 onChange={(e) =>
-                  setFormData({ ...formData, device: e.target.value })
+                  setFormData({
+                    ...formData,
+                    device: user.deviceList.find(
+                      (device) => device.name == e.target.value
+                    ),
+                  })
                 }
               />
             </div>
