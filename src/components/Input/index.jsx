@@ -3,9 +3,10 @@ export const Input = ({
   placeholder,
   id,
   type = "text",
-  step = null,
-  min = null,
-  max = null,
+  step,
+  min,
+  max,
+  value,
   onChange = () => {},
 }) => {
   return (
@@ -19,6 +20,7 @@ export const Input = ({
       min={min}
       max={max}
       onChange={onChange}
+      value={value}
     />
   );
 };

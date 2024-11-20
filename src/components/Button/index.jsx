@@ -5,6 +5,7 @@ export const Button = ({
   onClick = () => {},
   icon = null,
   variant = "primary",
+  ...props
 }) => {
   let classes =
     "flex justify-center font-xl items-center gap-x-4 px-4 py-2 rounded-md transition-all border-2 ";
@@ -23,7 +24,7 @@ export const Button = ({
     classes += `${variant} font-semibold`;
   }
   return (
-    <button type={type} onClick={onClick} className={classes}>
+    <button type={type} onClick={onClick} {...props} className={classes}>
       {icon}
       <span>{text}</span>
     </button>

@@ -5,7 +5,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 /* eslint-disable react/prop-types */
 export const Header = ({ user }) => {
   return (
-    <div className="p-4 border-b flex justify-end items-center gap-x-4">
+    <div className="px-6 py-4 border-b flex justify-end items-center gap-x-4">
       <p className="text-lg font-semibold text-blue-600">{user.name}</p>
       <Link
         to="/profile"

@@ -2,6 +2,8 @@
 import { Title } from "../components/Title";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 export const Profile = ({ user }) => {
   return (
@@ -19,7 +21,11 @@ export const Profile = ({ user }) => {
           <p>{user.email}</p>
         </div>
       </Card>
-      <Button text="Đăng xuất" variant="secondary" />
+      <Button
+        icon={<FontAwesomeIcon icon={faSignOut} />}
+        text="Đăng xuất"
+        variant="border-red-400 bg-red-400 text-white transition-all hover:bg-red-600 hover:border-red-600"
+      />
     </div>
   );
 };

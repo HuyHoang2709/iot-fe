@@ -9,7 +9,7 @@ import { Profile } from "../Profile";
 
 export const DisplayContainer = ({ user }) => {
   return (
-    <div className="p-4">
+    <div className="p-6">
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/devices" element={<DeviceManager />} />

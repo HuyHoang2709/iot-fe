@@ -1,6 +1,7 @@
 import { Title } from "../components/Title";
 import { Card } from "../components/Card";
 import { Select } from "../components/Select";
+import { Button } from "../components/Button";
 import { HomeBadge } from "./HomeBadge";
 import { HomeChart } from "./HomeChart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,22 +10,31 @@ import {
   faTemperatureHalf,
 } from "@fortawesome/free-solid-svg-icons";
 import { temp, humid, tempData, humidData, devices } from "../../data/mockData";
-// import { useState } from "react";
+import { useState } from "react";
 
 export const Home = () => {
-  // const [device, setDevice] = useState(devices[0]);
+  const [device, setDevice] = useState(devices[0]);
+
+  const handleConfirm = () => {
+    console.log(device);
+  };
 
   return (
     <div className="flex flex-col gap-y-4">
       <Title title="Trang chủ" />
       <div>
-        <label htmlFor="home-devices" className="font-semibold text-lg ml-1">
-          Chọn thiết bị
-        </label>
-        <Select
-          id="home-devices"
-          options={devices.map((device) => device.name)}
-        />
+        <label htmlFor="home-devices">Chọn thiết bị</label>
+        <div className="flex gap-x-4">
+          <Select
+            id="home-devices"
+            options={devices.map((device) => device.name)}
+            value={device.name}
+            onChange={(e) =>
+              setDevice(devices.find((d) => d.name === e.target.value))
+            }
+          />
+          <Button text="OK" onClick={handleConfirm} />
+        </div>
       </div>
       <Card className="flex justify-center gap-x-4">
         <HomeBadge

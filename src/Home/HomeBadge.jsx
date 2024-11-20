@@ -8,12 +8,12 @@ export const HomeBadge = ({ name, icon, data, color }) => {
       : "bg-blue-400 border-blue-400";
 
   return (
-    <Card className={`w-1/4 flex gap-x-4 text-white ${variant}`}>
+    <Card className={`w-1/2 flex gap-x-4 text-white ${variant}`}>
       <div className="w-3/4">
-        <h3 className="text-lg font-bold mb-8">{name}</h3>
-        <p className="text-4xl font-semibold">{data}</p>
+        <h3 className="text-lg font-bold mb-16">{name}</h3>
+        <p className="text-6xl font-semibold">{data}</p>
       </div>
-      <span className="w-1/4 text-8xl">{icon}</span>
+      <span className="w-1/4 text-8xl text-right">{icon}</span>
     </Card>
   );
 };
