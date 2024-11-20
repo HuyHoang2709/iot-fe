@@ -5,7 +5,7 @@ import { Button } from "../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 
-export const Profile = ({ user }) => {
+export const Profile = ({ user, setUser }) => {
   return (
     <div className="w-[540px] mx-auto gap-y-4 flex flex-col">
       <Title title="Thông tin cá nhân" />
@@ -25,6 +25,10 @@ export const Profile = ({ user }) => {
         icon={<FontAwesomeIcon icon={faSignOut} />}
         text="Đăng xuất"
         variant="border-red-400 bg-red-400 text-white transition-all hover:bg-red-600 hover:border-red-600"
+        onClick={() => {
+          setUser(null);
+          window.location.href = "/";
+        }}
       />
     </div>
   );

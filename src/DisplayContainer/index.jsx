@@ -7,16 +7,20 @@ import { Setting } from "../Setting";
 import { History } from "../History";
 import { Profile } from "../Profile";
 
-export const DisplayContainer = ({ user }) => {
+export const DisplayContainer = ({ user, setUser }) => {
   return (
     <div className="p-6">
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/devices" element={<DeviceManager />} />
+        <Route exact path="/" element={<Home user={user} />} />
+        <Route exact path="/devices" element={<DeviceManager user={user} />} />
         <Route exact path="/devices/add" element={<DeviceAdd />} />
-        <Route exact path="/setting" element={<Setting />} />
-        <Route exact path="/history" element={<History />} />
-        <Route exact path="/profile" element={<Profile user={user} />} />
+        <Route exact path="/setting" element={<Setting user={user} />} />
+        <Route exact path="/history" element={<History user={user} />} />
+        <Route
+          exact
+          path="/profile"
+          element={<Profile user={user} setUser={setUser} />}
+        />
       </Routes>
     </div>
   );

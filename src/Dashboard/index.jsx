@@ -3,7 +3,7 @@ import { DisplayContainer } from "../DisplayContainer";
 import { Header } from "../Header";
 import { Sidebar } from "../Sidebar";
 
-export const Dashboard = ({ user }) => {
+export const Dashboard = ({ user, setUser }) => {
   return (
     <div className="flex h-screen">
       <div className="w-1/6 border-r">
@@ -11,7 +11,7 @@ export const Dashboard = ({ user }) => {
       </div>
       <div className="w-5/6">
         <Header user={user} />
-        <DisplayContainer user={user} />
+        <DisplayContainer user={user} setUser={setUser} />
       </div>
     </div>
   );
