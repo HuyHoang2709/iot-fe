@@ -9,17 +9,15 @@ import {
   faPlus,
   faLightbulb,
   faTrash,
+  faDroplet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ScrollList } from "../components/ScrollList";
 import { Link } from "react-router-dom";
+// import { toast } from "react-toastify";
 // import { useState } from "react";
 
 export const DeviceManager = ({ user }) => {
-  const toggleDevice = (e) => {
-    console.log(e.target.dataset);
-  };
-
   return (
     <div>
       <Title title="Quản lý thiết bị" />
@@ -51,24 +49,33 @@ export const DeviceManager = ({ user }) => {
                 <Input placeholder="Độ sáng Led: [0-15]" type="number" />
                 <Button text="Lưu" />
               </div>
-              <div className="grid grid-cols-2 gap-x-4">
+              <div className="grid grid-cols-3 gap-x-4">
                 <Button
                   variant={`${device.fanStatus ? "on" : "off"}`}
                   text="Quạt"
                   icon={<FontAwesomeIcon icon={faFan} />}
-                  data-name="fan"
+                  name="fan"
                   data-device-id={device.id}
                   data-status={device.fanStatus}
-                  onClick={toggleDevice}
+                  onClick={() => {}}
                 />
                 <Button
                   variant={`${device.ledStatus ? "on" : "off"}`}
                   text="Led"
                   icon={<FontAwesomeIcon icon={faLightbulb} />}
-                  data-name="led"
+                  name="led"
                   data-device-id={device.id}
                   data-status={device.ledStatus}
-                  onClick={toggleDevice}
+                  onClick={() => {}}
+                />
+                <Button
+                  variant={`${device.waStatus ? "on" : "off"}`}
+                  text="Máy bơm"
+                  icon={<FontAwesomeIcon icon={faDroplet} />}
+                  name="wa"
+                  data-device-id={device.id}
+                  data-status={device.waStatus}
+                  onClick={() => {}}
                 />
               </div>
             </Card>

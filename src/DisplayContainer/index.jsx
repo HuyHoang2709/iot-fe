@@ -13,7 +13,7 @@ export const DisplayContainer = ({ user, setUser }) => {
       <Routes>
         <Route exact path="/" element={<Home user={user} />} />
         <Route exact path="/devices" element={<DeviceManager user={user} />} />
-        <Route exact path="/devices/add" element={<DeviceAdd />} />
+        <Route exact path="/devices/add" element={<DeviceAdd user={user} />} />
         <Route exact path="/setting" element={<Setting user={user} />} />
         <Route exact path="/history" element={<History user={user} />} />
         <Route

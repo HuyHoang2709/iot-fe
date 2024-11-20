@@ -1,18 +1,39 @@
+/* eslint-disable react/prop-types */
 import { Title } from "../components/Title";
 import { Card } from "../components/Card";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-export const DeviceAdd = () => {
+export const DeviceAdd = ({ user }) => {
   const [device, setDevice] = useState({
     name: "",
     id: "",
   });
 
   const handleConfirm = () => {
-    console.log(device);
+    if (!device.name || !device.id) {
+      toast.error("Vui lòng nhập đủ thông tin!");
+      return;
+    }
+    fetch("http://localhost:3000/device/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: device.name,
+        device_id: device.id,
+        user_id: user.id,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        toast.success("Thêm thiết bị thành công!");
+      }
+      throw res;
+    });
   };
 
   return (

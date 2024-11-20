@@ -94,7 +94,12 @@ export const History = ({ user }) => {
             </div>
           </div>
           <ScrollList styles="w-full max-h-[640px]">
-            <DataTable columns={columns} data={data} customStyles={styles} />
+            <DataTable
+              columns={columns}
+              pagination
+              data={data}
+              customStyles={styles}
+            />
           </ScrollList>
         </>
       ) : (
