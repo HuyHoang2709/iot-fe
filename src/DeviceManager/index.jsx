@@ -14,10 +14,86 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ScrollList } from "../components/ScrollList";
 import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import { useState } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const DeviceManager = ({ user }) => {
+  const [variant, setVariant] = useState(
+    user.deviceList.map((d) => {
+      return {
+        fan: d.fanStatus ? "on" : "off",
+        led: d.ledStatus ? "on" : "off",
+        wa: d.waStatus ? "on" : "off",
+      };
+    })
+  );
+
+  const toggleDevice = (status, device, deviceId, index) => {
+    fetch("http://localhost:3000/device/" + device, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: user.id,
+        device_id: deviceId,
+        status: status ? 0 : 1,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        toast.success("Thay đổi trạng thái thiết bị thành công");
+        setVariant((prev) => {
+          const newVariant = [...prev];
+          newVariant[index][device] = status ? "off" : "on";
+          return newVariant;
+        });
+        return res.json();
+      }
+      throw res;
+    });
+  };
+
+  const [brightness, setBrightness] = useState(user.deviceList.map(() => 0));
+
+  const updateBrightness = (deviceId, brightness, index) => {
+    console.log(deviceId, brightness, index);
+
+    if (brightness != 0) {
+      fetch("http://localhost:3000/device/brightness", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          device_id: deviceId,
+          brightness: brightness,
+        }),
+      })
+        .then((res) => {
+          console.log(res);
+
+          if (res.ok) {
+            toast.success("Cập nhật độ sáng thành công");
+            setBrightness((prev) => {
+              const newBrightness = [...prev];
+              newBrightness[index] = 0;
+              return newBrightness;
+            });
+            return res.json();
+          } else {
+            toast.error("Cập nhật độ sáng thất bại");
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating brightness:", error);
+          toast.error("Error updating brightness");
+        });
+    } else {
+      toast.warn("Vui lòng nhập giá trị độ sáng");
+    }
+  };
+
   return (
     <div>
       <Title title="Quản lý thiết bị" />
@@ -32,7 +108,7 @@ export const DeviceManager = ({ user }) => {
       </button>
       <ScrollList>
         {user.deviceList.length > 0 ? (
-          user.deviceList.map((device) => (
+          user.deviceList.map((device, idx) => (
             <Card
               key={device.id}
               className="w-[720px] mx-auto flex flex-col gap-y-4"
@@ -46,36 +122,49 @@ export const DeviceManager = ({ user }) => {
                 />
               </div>
               <div className="flex gap-x-4">
-                <Input placeholder="Độ sáng Led: [0-15]" type="number" />
-                <Button text="Lưu" />
+                <Input
+                  placeholder="Độ sáng Led: [0-15]"
+                  type="number"
+                  value={brightness[idx]}
+                  onChange={(e) => {
+                    setBrightness((prev) => {
+                      const newBrightness = [...prev];
+                      newBrightness[idx] = e.target.value;
+                      return newBrightness;
+                    });
+                  }}
+                />
+                <Button
+                  text="Lưu"
+                  onClick={() => {
+                    updateBrightness(device.id, brightness[idx], idx);
+                  }}
+                />
               </div>
               <div className="grid grid-cols-3 gap-x-4">
                 <Button
-                  variant={`${device.fanStatus ? "on" : "off"}`}
+                  variant={variant[idx].fan}
                   text="Quạt"
                   icon={<FontAwesomeIcon icon={faFan} />}
-                  name="fan"
-                  data-device-id={device.id}
-                  data-status={device.fanStatus}
-                  onClick={() => {}}
+                  onClick={() => {
+                    toggleDevice(device.fanStatus, "fan", device.id, idx);
+                  }}
                 />
                 <Button
-                  variant={`${device.ledStatus ? "on" : "off"}`}
+                  variant={variant[idx].led}
                   text="Led"
                   icon={<FontAwesomeIcon icon={faLightbulb} />}
-                  name="led"
-                  data-device-id={device.id}
-                  data-status={device.ledStatus}
-                  onClick={() => {}}
+                  onClick={() => {
+                    toggleDevice(device.fanStatus, "led", device.id, idx);
+                  }}
                 />
                 <Button
-                  variant={`${device.waStatus ? "on" : "off"}`}
+                  variant={variant[idx].wa}
                   text="Máy bơm"
                   icon={<FontAwesomeIcon icon={faDroplet} />}
-                  name="wa"
-                  data-device-id={device.id}
-                  data-status={device.waStatus}
-                  onClick={() => {}}
+                  onClick={() => {
+                    toggleDevice(device.fanStatus, "wa", device.id, idx);
+                  }}
                 />
               </div>
             </Card>
