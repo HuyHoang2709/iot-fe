@@ -29,8 +29,6 @@ export const Setting = ({ user }) => {
     else if (formData.lowerHumid > formData.upperHumid)
       toast.error("Ngưỡng độ ẩm không hợp lệ!");
     else {
-      console.log(formData, user.deviceList);
-
       fetch("http://localhost:3000/device/setting", {
         method: "PUT",
         credentials: "include",
@@ -45,14 +43,16 @@ export const Setting = ({ user }) => {
           lower_humid: formData.lowerHumid,
           upper_humid: formData.upperHumid,
         }),
-      }).then((res) => {
-        if (res.ok) {
-          toast.success("Cài đặt ngưỡng cảnh báo thành cóng!");
-          return res.json();
-        } else {
-          toast.error("Cài đặt ngưỡng cảnh báo thất bại!");
-        }
-      });
+      })
+        .then((res) => {
+          if (res.ok) {
+            toast.success("Cài đặt ngưỡng cảnh báo thành cóng!");
+            return res.json();
+          } else {
+            toast.error("Cài đặt ngưỡng cảnh báo thất bại!");
+          }
+        })
+        .then((json) => console.log(json));
     }
   };
 

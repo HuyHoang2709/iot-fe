@@ -3,13 +3,18 @@ import { Title } from "../components/Title";
 import { Select } from "../components/Select";
 import { Button } from "../components/Button";
 import { ScrollList } from "../components/ScrollList";
-import { devices, history } from "../../data/mockData";
-import { useState } from "react";
+// import { devices, history } from "../../data/mockData";
+import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const History = ({ user }) => {
   const columns = [
+    {
+      name: "ID",
+      selector: (row) => row.id,
+    },
     {
       name: "Nhiệt độ",
       selector: (row) => row.temp,
@@ -40,10 +45,33 @@ export const History = ({ user }) => {
     },
   };
 
+  const [data, setData] = useState([]);
   const [device, setDevice] = useState(user.deviceList[0]);
+
   const handleConfirm = () => {
     console.log(device);
   };
+
+  useEffect(() => {
+    fetch("http://localhost:3000/device/history", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        device_id: device.id,
+        user_id: user.id,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          toast.error("Không lấy được dữ liệu");
+          throw new Error("Failed to fetch");
+        }
+        return res.json();
+      })
+      .then((data) => setData(data));
+  }, [device.id, user.id]);
 
   return (
     <div>
@@ -57,14 +85,16 @@ export const History = ({ user }) => {
                 options={user.deviceList.map((device) => device.name)}
                 value={device.name}
                 onChange={(e) =>
-                  setDevice(devices.find((d) => d.name === e.target.value))
+                  setDevice(
+                    user.deviceList.find((d) => d.name === e.target.value)
+                  )
                 }
               />
               <Button text="OK" onClick={handleConfirm} />
             </div>
           </div>
           <ScrollList styles="w-full max-h-[640px]">
-            <DataTable columns={columns} data={history} customStyles={styles} />
+            <DataTable columns={columns} data={data} customStyles={styles} />
           </ScrollList>
         </>
       ) : (
