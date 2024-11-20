@@ -10,15 +10,48 @@ import {
   faDroplet,
   faTemperatureHalf,
 } from "@fortawesome/free-solid-svg-icons";
-import { temp, humid, tempData, humidData, devices } from "../../data/mockData";
-import { useState } from "react";
+import { temp, humid, tempData, humidData } from "../../data/mockData";
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
 import { Link } from "react-router-dom";
 
 export const Home = ({ user }) => {
+  const [data, setData] = useState({ temp: temp, humid: humid });
   const [device, setDevice] = useState(user.deviceList[0] || {});
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socket = io("http://localhost:3000");
+
+    socket.on("connect", () => {
+      console.log("Connected to websocket server");
+      socket.emit("info", { device_id: device.id });
+    });
+
+    socket.on("data", (message) => {
+      const { new_temp, new_humid } = message;
+      console.log(new_temp, new_humid);
+
+      setData((prev) => ({ ...prev, temp: new_temp, humid: new_humid }));
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from websocket server");
+    });
+
+    setSocket(socket);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const handleConfirm = () => {
-    console.log(device);
+    if (socket && socket.connected) {
+      socket.emit("info", { device_id: device.id });
+    } else {
+      console.error("WebSocket is not connected");
+    }
   };
 
   return (
@@ -34,7 +67,9 @@ export const Home = ({ user }) => {
                 options={user.deviceList.map((device) => device.name)}
                 value={device.name}
                 onChange={(e) =>
-                  setDevice(devices.find((d) => d.name === e.target.value))
+                  setDevice(
+                    user.deviceList.find((d) => d.name === e.target.value)
+                  )
                 }
               />
               <Button text="OK" onClick={handleConfirm} />
@@ -45,13 +80,13 @@ export const Home = ({ user }) => {
               name="Nhiệt độ"
               icon={<FontAwesomeIcon icon={faTemperatureHalf} />}
               color="red"
-              data={<>{temp} °C</>}
+              data={<>{data.temp} °C</>}
             />
             <HomeBadge
               name="Độ ẩm"
               icon={<FontAwesomeIcon icon={faDroplet} />}
               color="blue"
-              data={<>{humid} %</>}
+              data={<>{data.humid} %</>}
             />
           </Card>
           <Card className="flex justify-center gap-x-4">
